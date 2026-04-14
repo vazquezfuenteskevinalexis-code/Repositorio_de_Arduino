@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceptos Básicos - Arduino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e8f4f8;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                repeating-linear-gradient(0deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            color: #004d99;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #0066cc;
+        }
+
+        .btn-volver {
+            display: inline-block;
+            background: #0066cc;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 102, 204, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.5);
+            background: #0052a3;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #004d99;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #0066cc;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title-icon {
+            font-size: 1.2em;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f8fbff 0%, #e8f4f8 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #b3d9ff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 102, 204, 0.03) 10px,
+                rgba(0, 102, 204, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.2);
+            border-color: #0066cc;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-icon {
+            font-size: 3em;
+            filter: drop-shadow(2px 2px 4px rgba(0, 102, 204, 0.2));
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            color: #004d99;
+            font-weight: 600;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-description {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #0066cc 0%, #0088ff 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image-placeholder {
+            font-size: 4em;
+            opacity: 0.3;
+            color: white;
+        }
+
+        .card-features {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .card-features li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #444;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-download:hover {
+            background: #0052a3;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Code Section */
+        .code-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .code-container {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .code-container pre {
+            margin: 0;
+            color: #e2e8f0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .keyword { color: #ff79c6; }
+        .function { color: #50fa7b; }
+        .string { color: #f1fa8c; }
+        .comment { color: #6272a4; }
+        .number { color: #bd93f9; }
+
+        /* Glossary */
+        .glossary-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.15);
+        }
+
+        .glossary-item {
+            background: #f8fbff;
+            border-left: 4px solid #0066cc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .glossary-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.2);
+        }
+
+        .glossary-item h4 {
+            color: #004d99;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .glossary-item p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .parametros {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #b3d9ff;
+        }
+
+        .parametros strong {
+            color: #0066cc;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .parametros code {
+            background: #2d3748;
+            color: #50fa7b;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper,
+            .code-section,
+            .glossary-section {
+                padding: 25px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📚 Maqueta de una casa con Leds que prenden con una fotorresistencia</h1>
+            <p>En este apartado se explicara como se diseño la maqueta de una casa con luzes
+            automaticas por medio del uso de una fotorrsistencia</p>
+        </div>
+
+        <a href="arduino-portfolio.html" class="btn-volver">← Volver al Catálogo</a>
+
+        <!-- Sección de Cards con Información -->
+        <div class="content-wrapper">
+            <h2 class="section-title">
+                <span class="section-title-icon">💡</span>
+                Explicación
+            </h2>
+
+            <div class="cards-grid">
+                <!-- Card 1: ¿Qué es Arduino? -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="card-icon">🔧</div>
+                        <h3 class="card-title">Explicacion de la maqueta</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-image-container">
+                            <div class="card-image-placeholder">⚙️</div>
+                        </div>
+                        <p class="card-description">
+                            El circuito sirve principalmente con unos LDEs, cables*Jumpers*, Protoboard,
+                            Arduino y una fotorresistencia.
+                            El objetivo principal de este circuito es el hacer que unos seies LEDs prensan en el momento que se
+                            apaguen las luces y estos entren en osuridad, esto es logrado gracias a la fotrresistencia que esta 
+                            programada con Arduino IDE y asi poder detectar el momento donde se apague y prenda.
+                        </p>
+                        <ul class="card-features">
+                            <li><// C++ code
+                            //
+                             int rojo=13;
+                             int verde=12;
+                             int blanco=11;
+                             int amarillo=10;
+                             int azul=9;
+                             int naranja=8;
+                             int lecturasensor;
+                            void setup()
+                            {
+                              Serial.begin(9600);
+                              pinMode(rojo, OUTPUT);
+                              pinMode(verde, OUTPUT);
+                              pinMode(blanco, OUTPUT);
+                              pinMode(amarillo, OUTPUT);
+                              pinMode(azul, OUTPUT);
+                              pinMode(naranja, OUTPUT);
+                            }
+
+                            void loop()
+                            {
+                             lecturasensor=analogRead(A0);
+                             Serial.println(lecturasensor);
+                             
+                             if(lecturasensor>600)
+                             {
+                               digitalWrite(rojo,HIGH);
+                               digitalWrite(verde,HIGH);
+                               digitalWrite(blanco,HIGH);
+                               digitalWrite(amarillo,HIGH);
+                               digitalWrite(azul,HIGH);
+                               digitalWrite(naranja,HIGH);
+                             }
+                             else
+                             {
+                               digitalWrite(rojo,LOW);
+                               digitalWrite(verde,LOW);
+                               digitalWrite(blanco,LOW);
+                               digitalWrite(amarillo,LOW);
+                               digitalWrite(azul,LOW);
+                               digitalWrite(naranja,LOW);
+                             }
+                    }</li>
+                            
+                        </ul>
+
+                    </div>
+                </div>
+
+                <!-- Card 2: Componentes Básicos -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="card-icon">🔌</div>
+                        <h3 class="card-title">Diagrama en Tinkercad</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-image-container">
+                            <div class="card-image-placeholder">🔩</div>
+                        </div>
+                        <p class="card-description">
+                            Grafica del diseño en Tinkercad.
+                        </p>
+                         <img src="Tinkercad.png" alt="Esta es la imagen de prueba de como deberia quedar el circuito en fisico."style="width: 100%; height: auto;">
+                        <ul class="card-features">
+                            <li>MATERIALES</li>
+                            <li>LEDs</li>
+                            <li>Cables*Jumpers*</li>
+                            <li>Protoboard</li>
+                            <li>Arduino</li>
+                            <li>Fotorresistencia</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <!-- Card 3: Conceptos Eléctricos -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <div class="card-icon">⚡</div>
+                        <h3 class="card-title">Diseño de la maqueta</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-image-container">
+                            <div class="card-image-placeholder">💫</div>
+                        </div>
+                        <p class="card-description">
+                            La maqueta se empezo con una caja de un tamaño mediano*como de galleta pero un poco mucho mas grande*,
+                            se abrio por la parte de arriba con un cuchillo para darle una forma de una casa un toque minimalista
+                            se le pego un carton en la parte de abajo del resto de la caja para asi simular una especie de jardin
+                            o patio, kuego se hicieron averturas en la caja para simular unas puertas y ventanas. Luego se hizo un agujero
+                            en la parte de atras de la caja de un tamaño grande para poder meter la protoboard y el Arduino y empezar a
+                            pegar los LEDs y los Jumpers de manera escondida en varias partes de la casa, luego donde deberia ir las
+                            puertas y las ventanas se le pego un unos plasticos para simular cristal y se escondio la fotorresistencia
+                            en dentro con un orificio con unos cables para simular una especie de antena.
+                            Tambien se pinto de un color gris.
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+            </div>
+        </div>       
+</body>
+</html>
