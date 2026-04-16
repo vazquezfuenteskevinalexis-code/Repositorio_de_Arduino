@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios de Electrónica de Arduino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #e8f4f8;
+        }
+
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                repeating-linear-gradient(0deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0066cc 0%, #004d99 50%, #003366 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '⚡';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            font-size: 4rem;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '🔌';
+            position: absolute;
+            bottom: 15%;
+            right: 15%;
+            font-size: 4rem;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .circuit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-info {
+            margin-bottom: 1rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .hero-info:last-child {
+            margin-bottom: 0;
+        }
+
+        .catalog {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            z-index: 1;
+        }
+
+        .catalog h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            color: #004d99;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 2px solid #e0f2ff;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.25);
+            border-color: #0066cc;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #0066cc 0%, #0088ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            z-index: 1;
+        }
+
+        .card-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            z-index: 1;
+        }
+
+        .card-content {
+            padding: 1.8rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #004d99;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .card-link {
+            display: inline-block;
+            color: #0066cc;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #0066cc;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .card-link:hover {
+            background: #0066cc;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .catalog {
+                padding: 3rem 1.5rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <!-- Portada -->
+    <section class="hero">
+        <div class="circuit-icon">🔧⚙️💡</div>
+        <h1>Principios de Electrónica de Arduino</h1>
+        <p class="hero-info">Recurso de submódulo 1 y 2 de 4to semestre de IA</p>
+        <p class="hero-info">Docente: Jordy Chirino Balcazar</p>
+        <p class="hero-info">Alumno: Estrada Vázquez Kevin Alexis</p>
+    </section>
+
+    <!-- Catálogo -->
+    <section class="catalog">
+        <h2>Contenido del Curso</h2>
+        <div class="cards-container">
+            <!-- Card 1: Conceptos Básicos -->
+            <a href="conceptos_basicos_arduino.html" class="card">
+                <div class="card-image">
+                    <div class="card-icon">📚</div>
+                    <div class="card-badge">Módulo 1</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">conceptos_basicos_arduino.html</h3>
+                    <p class="card-description">
+                        Fundamentos de electrónica y programación con Arduino. Aprende sobre voltaje, corriente, resistencia y los principios básicos de la plataforma Arduino.
+                    </p>
+                    <span class="card-link">Link de prueba →</span>
+                </div>
+            </a>
+
+            <!-- Card 2: Glosario de Materiales -->
+            <a href="glosario-materiales.html" class="card">
+                <div class="card-image">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-badge">Módulo 2</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Glosario de Materiales de Arduino</h3>
+                    <p class="card-description">
+                        Catálogo completo de componentes electrónicos utilizados en proyectos con Arduino: resistencias, LEDs, sensores, motores y más.
+                    </p>
+                    <span class="card-link">Link de prueba →</span>
+                </div>
+            </a>
+
+            <a href="Maqueta_con_fotorresistensias.html" class="card">
+                <div class="card-image">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-badge">Módulo 3</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Cracion de la maqueta</h3>
+                    <p class="card-description">
+                        Catologo que explica como se creo la maqueta de luces LEDs que reaccionan a la luz y oscuridad.
+                    </p>
+                    <span class="card-link">Link de prueba →</span>
+                </div>
+            </a>
+
+            <a href="LED_RGB.html" class="card">
+                <div class="card-image">
+                    <div class="card-icon">🔌</div>
+                    <div class="card-badge">Módulo 4</div>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Diseño del LED RGB</h3>
+                    <p class="card-description">
+                        Apartado que explica como funciona el LED RGB.
+                    </p>
+                    <span class="card-link">Link de prueba →</span>
+                </div>
+            </a>
+        </div>
+    </section>
+</body>
+</html>
