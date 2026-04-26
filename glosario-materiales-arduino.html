@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario de Materiales de Arduino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #e8f4f8;
+        }
+
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                repeating-linear-gradient(0deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, #00aaff 0px, #00aaff 1px, transparent 1px, transparent 20px);
+        }
+
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #0066cc 0%, #004d99 100%);
+            color: white;
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header::before {
+            content: '⚡';
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            font-size: 3rem;
+            opacity: 0.1;
+        }
+
+        .header::after {
+            content: '🔌';
+            position: absolute;
+            top: 20%;
+            right: 5%;
+            font-size: 3rem;
+            opacity: 0.1;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .header .module-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            z-index: 1;
+        }
+
+        .intro {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.15);
+            border-left: 4px solid #0066cc;
+        }
+
+        .intro p {
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .components-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .component-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #e0f2ff;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 102, 204, 0.25);
+        }
+
+        .component-header {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e0f2ff 100%);
+        }
+
+        .component-image {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 2px solid #0066cc;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .component-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .component-title {
+            font-size: 1.8rem;
+            color: #004d99;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .component-category {
+            display: inline-block;
+            background: #0066cc;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .component-description {
+            background: white;
+            padding: 2rem;
+        }
+
+        .component-description h3 {
+            color: #004d99;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #e0f2ff;
+            padding-bottom: 0.5rem;
+        }
+
+        .component-description p {
+            color: #555;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .specs-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .specs-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #666;
+        }
+
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .specs-list strong {
+            color: #0066cc;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .component-header {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .component-image {
+                margin: 0 auto;
+            }
+
+            .component-category {
+                margin: 0 auto 1rem;
+            }
+
+            .back-link {
+                top: 1rem;
+                left: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span>Volver al inicio</span>
+        </a>
+        <h1>Glosario de Materiales de Arduino</h1>
+        <div class="module-badge">Módulo 2 - Componentes Electrónicos</div>
+    </header>
+
+    <!-- Contenido -->
+    <div class="container">
+        <!-- Introducción -->
+        <div class="intro">
+            <p>
+                A continuación se presenta una lista completa de los componentes electrónicos más utilizados en proyectos con Arduino. 
+                Cada componente incluye su descripción, funcionamiento y especificaciones técnicas para facilitar su comprensión y uso.
+            </p>
+        </div>
+
+        <!-- Grid de Componentes -->
+        <div class="components-grid">
+            
+            <!-- 1. Placa Arduino -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🖥️</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Placa Arduino UNO</h2>
+                        <span class="component-category">Microcontrolador</span>
+                        <p style="color: #666;">El cerebro de tus proyectos electrónicos</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        La placa Arduino UNO es una tarjeta de desarrollo basada en el microcontrolador ATmega328P. 
+                        Es la placa más popular para principiantes y cuenta con 14 pines digitales de entrada/salida, 
+                        6 entradas analógicas, un resonador cerámico de 16 MHz, conexión USB, conector de alimentación, 
+                        cabecera ICSP y botón de reset.
+                    </p>
+                    <h3>Especificaciones Técnicas</h3>
+                    <ul class="specs-list">
+                        <li><strong>Microcontrolador:</strong> ATmega328P</li>
+                        <li><strong>Voltaje de operación:</strong> 5V</li>
+                        <li><strong>Voltaje de entrada recomendado:</strong> 7-12V</li>
+                        <li><strong>Pines digitales I/O:</strong> 14 (6 pueden usarse como PWM)</li>
+                        <li><strong>Pines de entrada analógica:</strong> 6</li>
+                        <li><strong>Memoria Flash:</strong> 32 KB</li>
+                        <li><strong>SRAM:</strong> 2 KB</li>
+                        <li><strong>EEPROM:</strong> 1 KB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. Protoboard -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">📋</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Protoboard (Breadboard)</h2>
+                        <span class="component-category">Base de Prototipado</span>
+                        <p style="color: #666;">Plataforma para conectar componentes sin soldar</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        Un protoboard o breadboard es una placa de pruebas que permite construir circuitos electrónicos 
+                        temporales sin necesidad de soldar. Cuenta con orificios conectados internamente en filas y columnas, 
+                        facilitando la inserción y conexión de componentes electrónicos y cables de manera rápida y reutilizable.
+                    </p>
+                    <h3>Características</h3>
+                    <ul class="specs-list">
+                        <li><strong>Tipo:</strong> Placa de prototipos sin soldadura</li>
+                        <li><strong>Conexiones internas:</strong> Filas horizontales y buses verticales</li>
+                        <li><strong>Tamaños comunes:</strong> 400, 830, 1660 puntos de conexión</li>
+                        <li><strong>Ventajas:</strong> Reutilizable, fácil de usar, ideal para prototipos</li>
+                        <li><strong>Uso típico:</strong> Pruebas de circuitos, aprendizaje, desarrollo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. LED -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">💡</div>
+                    <div class="component-info">
+                        <h2 class="component-title">LED (Diodo Emisor de Luz)</h2>
+                        <span class="component-category">Salida Visual</span>
+                        <p style="color: #666;">Componente de iluminación y señalización</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El LED (Light Emitting Diode) es un diodo semiconductor que emite luz cuando circula corriente 
+                        a través de él. Es uno de los componentes más utilizados en proyectos Arduino para indicadores 
+                        visuales, iluminación y pantallas. Tiene polaridad: el terminal más largo es el ánodo (+) y 
+                        el más corto es el cátodo (-).
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje directo típico:</strong> 1.8V - 3.3V (depende del color)</li>
+                        <li><strong>Corriente recomendada:</strong> 20mA</li>
+                        <li><strong>Colores comunes:</strong> Rojo, verde, azul, amarillo, blanco</li>
+                        <li><strong>Polaridad:</strong> Ánodo (+) pierna larga, Cátodo (-) pierna corta</li>
+                        <li><strong>Resistencia requerida:</strong> Sí (típicamente 220Ω - 330Ω)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4. Resistencia -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🎨</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Resistencia</h2>
+                        <span class="component-category">Componente Pasivo</span>
+                        <p style="color: #666;">Limita el flujo de corriente eléctrica</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        Las resistencias son componentes pasivos que se oponen al flujo de corriente eléctrica. Se utilizan 
+                        para limitar la corriente, dividir voltajes y proteger componentes sensibles como LEDs. Su valor 
+                        se mide en ohmios (Ω) y se identifica mediante bandas de colores o códigos numéricos.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Unidad de medida:</strong> Ohmios (Ω)</li>
+                        <li><strong>Valores comunes:</strong> 220Ω, 330Ω, 1kΩ, 10kΩ</li>
+                        <li><strong>Potencia típica:</strong> 1/4W, 1/2W, 1W</li>
+                        <li><strong>Tolerancia:</strong> ±5% (dorado), ±10% (plateado)</li>
+                        <li><strong>Código de colores:</strong> Negro, marrón, rojo, naranja, amarillo, verde, azul, violeta, gris, blanco</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 5. Pulsador (Push Button) -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🔘</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Pulsador (Push Button)</h2>
+                        <span class="component-category">Entrada Digital</span>
+                        <p style="color: #666;">Interruptor momentáneo de contacto</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El pulsador o botón es un interruptor que cierra o abre un circuito cuando se presiona. 
+                        Es momentáneo, lo que significa que solo conduce mientras está presionado. Se utiliza comúnmente 
+                        como entrada digital en Arduino para detectar acciones del usuario. Requiere una resistencia 
+                        pull-up o pull-down para funcionar correctamente.
+                    </p>
+                    <h3>Características</h3>
+                    <ul class="specs-list">
+                        <li><strong>Tipo:</strong> Interruptor momentáneo (SPST o SPDT)</li>
+                        <li><strong>Voltaje máximo:</strong> 12V - 50V (depende del modelo)</li>
+                        <li><strong>Corriente máxima:</strong> 50mA - 500mA</li>
+                        <li><strong>Configuración típica:</strong> Pull-up con resistencia de 10kΩ</li>
+                        <li><strong>Uso común:</strong> Entrada de usuario, control de menús, activación de funciones</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 6. Potenciómetro -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🎚️</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Potenciómetro</h2>
+                        <span class="component-category">Entrada Analógica</span>
+                        <p style="color: #666;">Resistencia variable ajustable manualmente</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        Un potenciómetro es una resistencia variable de tres terminales que permite ajustar manualmente 
+                        su valor de resistencia mediante un control giratorio o deslizante. Se utiliza en Arduino como 
+                        entrada analógica para controlar parámetros como brillo, volumen, velocidad, o cualquier valor 
+                        que necesite ajuste continuo.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Valores típicos:</strong> 1kΩ, 10kΩ, 100kΩ, 1MΩ</li>
+                        <li><strong>Tipo común:</strong> Rotatorio o lineal (slider)</li>
+                        <li><strong>Terminales:</strong> 3 (VCC, salida variable, GND)</li>
+                        <li><strong>Rango de lectura:</strong> 0-1023 (10 bits en Arduino)</li>
+                        <li><strong>Aplicaciones:</strong> Control de volumen, ajuste de brillo, control de velocidad</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 7. Sensor Ultrasónico HC-SR04 -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">📡</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Sensor Ultrasónico HC-SR04</h2>
+                        <span class="component-category">Sensor de Distancia</span>
+                        <p style="color: #666;">Mide distancias mediante ondas ultrasónicas</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El sensor ultrasónico HC-SR04 utiliza ondas de sonido de alta frecuencia para medir distancias. 
+                        Emite un pulso ultrasónico y mide el tiempo que tarda en regresar el eco, calculando así la 
+                        distancia al objeto. Es ampliamente utilizado en robots para evitar obstáculos, sistemas de 
+                        estacionamiento y mediciones de nivel.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 5V DC</li>
+                        <li><strong>Rango de medición:</strong> 2cm - 400cm</li>
+                        <li><strong>Precisión:</strong> ±3mm</li>
+                        <li><strong>Ángulo de medición:</strong> 15 grados</li>
+                        <li><strong>Pines:</strong> VCC, Trigger, Echo, GND</li>
+                        <li><strong>Frecuencia ultrasónica:</strong> 40 kHz</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 8. Sensor DHT11 -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🌡️</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Sensor DHT11</h2>
+                        <span class="component-category">Sensor Ambiental</span>
+                        <p style="color: #666;">Mide temperatura y humedad</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El DHT11 es un sensor digital de temperatura y humedad relativa de bajo costo. Integra un 
+                        sensor de humedad capacitivo y un termistor para medir el aire circundante, proporcionando 
+                        una señal digital calibrada. Es ideal para proyectos de estaciones meteorológicas, control 
+                        ambiental y domótica.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 3V - 5.5V</li>
+                        <li><strong>Rango de temperatura:</strong> 0°C a 50°C (±2°C precisión)</li>
+                        <li><strong>Rango de humedad:</strong> 20% a 90% RH (±5% precisión)</li>
+                        <li><strong>Interfaz:</strong> Digital de un solo cable</li>
+                        <li><strong>Tiempo de muestreo:</strong> 1 segundo</li>
+                        <li><strong>Pines:</strong> VCC, Data, GND</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 9. Servomotor -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">⚙️</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Servomotor SG90</h2>
+                        <span class="component-category">Actuador de Posición</span>
+                        <p style="color: #666;">Motor con control preciso de ángulo</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El servomotor es un motor de corriente continua con un sistema de control incorporado que 
+                        permite posicionarlo en un ángulo específico. El SG90 es un micro servo muy popular en 
+                        proyectos Arduino por su tamaño compacto y bajo costo. Se controla mediante señales PWM 
+                        y es ideal para robots, brazos mecánicos y mecanismos de dirección.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 4.8V - 6V</li>
+                        <li><strong>Rango de rotación:</strong> 180 grados</li>
+                        <li><strong>Torque:</strong> 1.8 kg/cm (4.8V)</li>
+                        <li><strong>Velocidad:</strong> 0.1 seg/60° (4.8V)</li>
+                        <li><strong>Control:</strong> Señal PWM (1ms-2ms)</li>
+                        <li><strong>Cables:</strong> Marrón (GND), Rojo (VCC), Naranja (Señal)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 10. Motor DC -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🔄</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Motor DC</h2>
+                        <span class="component-category">Actuador de Movimiento</span>
+                        <p style="color: #666;">Motor de corriente continua para rotación</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El motor DC (corriente continua) convierte energía eléctrica en movimiento rotatorio continuo. 
+                        Es fundamental en robótica móvil, ventiladores, bombas y sistemas de transporte. Para controlarlo 
+                        con Arduino se requiere un driver de motor (como L298N o L293D) ya que Arduino no puede 
+                        suministrar la corriente necesaria directamente.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje típico:</strong> 3V - 12V (depende del modelo)</li>
+                        <li><strong>Corriente:</strong> 100mA - 2A</li>
+                        <li><strong>Velocidad:</strong> Variable con PWM</li>
+                        <li><strong>RPM típico:</strong> 100 - 10,000 RPM</li>
+                        <li><strong>Control requerido:</strong> Driver de motor (L298N, L293D)</li>
+                        <li><strong>Aplicaciones:</strong> Robots móviles, ventiladores, ruedas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 11. Display LCD 16x2 -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">📺</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Display LCD 16x2</h2>
+                        <span class="component-category">Pantalla de Texto</span>
+                        <p style="color: #666;">Pantalla de cristal líquido para mostrar información</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El display LCD 16x2 es una pantalla de cristal líquido capaz de mostrar 2 filas de 16 caracteres 
+                        cada una. Es muy utilizado para mostrar información textual en proyectos Arduino como sensores, 
+                        menús, mensajes y datos en tiempo real. Puede controlarse con o sin módulo I2C para reducir 
+                        el número de pines necesarios.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 5V</li>
+                        <li><strong>Caracteres:</strong> 16 columnas x 2 filas</li>
+                        <li><strong>Interfaz:</strong> Paralela (4 o 8 bits) o I2C</li>
+                        <li><strong>Retroiluminación:</strong> LED (generalmente azul o verde)</li>
+                        <li><strong>Controlador:</strong> HD44780 o compatible</li>
+                        <li><strong>Conexión I2C:</strong> Solo 2 pines (SDA, SCL) con adaptador</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 12. Buzzer Piezoléctrico -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🔊</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Buzzer Piezoléctrico</h2>
+                        <span class="component-category">Salida de Audio</span>
+                        <p style="color: #666;">Generador de sonidos y tonos</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El buzzer piezoléctrico es un componente que genera sonido mediante el efecto piezoeléctrico. 
+                        Puede producir tonos de diferentes frecuencias cuando se le aplica una señal PWM. Se utiliza 
+                        para alarmas, notificaciones, melodías simples y retroalimentación auditiva en proyectos 
+                        interactivos. Existen versiones activas (con oscilador interno) y pasivas (requieren señal externa).
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 3V - 12V</li>
+                        <li><strong>Tipo:</strong> Activo (oscilador interno) o Pasivo (requiere PWM)</li>
+                        <li><strong>Frecuencia típica:</strong> 2kHz - 4kHz</li>
+                        <li><strong>Nivel de sonido:</strong> 70-90 dB</li>
+                        <li><strong>Corriente:</strong> 20-30 mA típico</li>
+                        <li><strong>Aplicaciones:</strong> Alarmas, melodías, notificaciones, juegos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 13. Fotorresistencia LDR -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">☀️</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Fotorresistencia (LDR)</h2>
+                        <span class="component-category">Sensor de Luz</span>
+                        <p style="color: #666;">Resistencia variable sensible a la luz</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        La fotorresistencia o LDR (Light Dependent Resistor) es un componente cuya resistencia varía 
+                        según la intensidad de luz que recibe. En oscuridad tiene alta resistencia (varios MΩ) y 
+                        con luz disminuye considerablemente (decenas de Ω). Se utiliza en divisores de voltaje para 
+                        crear sensores de luz en proyectos de iluminación automática, seguidores solares y sistemas 
+                        de detección de día/noche.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Resistencia en oscuridad:</strong> 1MΩ - 10MΩ</li>
+                        <li><strong>Resistencia con luz:</strong> 10Ω - 100Ω</li>
+                        <li><strong>Voltaje máximo:</strong> 150V</li>
+                        <li><strong>Potencia máxima:</strong> 100mW</li>
+                        <li><strong>Configuración típica:</strong> Divisor de voltaje con resistencia de 10kΩ</li>
+                        <li><strong>Aplicaciones:</strong> Luces automáticas, seguidor solar, medidor de luz</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 14. Relé (Relay) -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">🔌</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Relé (Relay)</h2>
+                        <span class="component-category">Interruptor Electromecánico</span>
+                        <p style="color: #666;">Controla cargas de alto voltaje con señal de bajo voltaje</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El relé es un interruptor electromecánico que permite controlar circuitos de alta potencia 
+                        (220VAC, lámparas, motores AC) usando señales de bajo voltaje desde Arduino. Funciona mediante 
+                        un electroimán que acciona contactos mecánicos. Los módulos de relé para Arduino incluyen 
+                        protección con optoacoplador y pueden controlar 1, 2, 4, 8 o más canales independientes.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de bobina:</strong> 5V DC (típico para Arduino)</li>
+                        <li><strong>Voltaje de carga:</strong> 120-250V AC / 30V DC</li>
+                        <li><strong>Corriente máxima:</strong> 10A - 30A (depende del modelo)</li>
+                        <li><strong>Tipo de contacto:</strong> SPDT, DPDT (un polo o dos polos)</li>
+                        <li><strong>Aislamiento:</strong> Optoacoplador para protección</li>
+                        <li><strong>Aplicaciones:</strong> Domótica, control de lámparas AC, motores, electroválvulas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 15. Módulo Bluetooth HC-05 -->
+            <div class="component-card">
+                <div class="component-header">
+                    <div class="component-image">📱</div>
+                    <div class="component-info">
+                        <h2 class="component-title">Módulo Bluetooth HC-05</h2>
+                        <span class="component-category">Comunicación Inalámbrica</span>
+                        <p style="color: #666;">Comunicación serial inalámbrica con dispositivos Bluetooth</p>
+                    </div>
+                </div>
+                <div class="component-description">
+                    <h3>Descripción</h3>
+                    <p>
+                        El módulo HC-05 es un transceptor Bluetooth SPP (Serial Port Protocol) que permite establecer 
+                        comunicación inalámbrica entre Arduino y dispositivos como smartphones, tablets o computadoras. 
+                        Puede funcionar como maestro o esclavo, facilitando la creación de proyectos de control remoto, 
+                        monitoreo inalámbrico y transferencia de datos sin cables.
+                    </p>
+                    <h3>Especificaciones</h3>
+                    <ul class="specs-list">
+                        <li><strong>Voltaje de operación:</strong> 3.3V (usar divisor de voltaje para TX de Arduino)</li>
+                        <li><strong>Alcance:</strong> 10 metros aproximadamente</li>
+                        <li><strong>Velocidad de transmisión:</strong> 9600 bps por defecto (configurable)</li>
+                        <li><strong>Protocolo:</strong> Bluetooth 2.0 SPP</li>
+                        <li><strong>Modos:</strong> Maestro y esclavo</li>
+                        <li><strong>Pines:</strong> VCC, GND, TX, RX, State, Enable</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
