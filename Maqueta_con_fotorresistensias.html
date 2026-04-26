@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conceptos Básicos - Arduino</title>
+    <title>Maqueta con fotorresistencias-</title>
+    <p>El objetivo de esta maqueta es la de enseñar el uso de una fotorresistencia por medio de la creacion de una maqueta que asemeja una casa moderna inteligente con unos LEDs
+    y que esta prenda cada vez que se apagen las luces y prenda con las luces prendidas</p>
     <style>
         * {
             margin: 0;
@@ -339,179 +341,64 @@
 
     <div class="container">
         <div class="header">
-            <h1>📚 Maqueta de una casa con Leds que prenden con una fotorresistencia</h1>
-            <p>En este apartado se explicara como se diseño la maqueta de una casa con luzes
-            automaticas por medio del uso de una fotorrsistencia</p>
+            <h1>Maqueta de casa inteligente con LDR</h1>
         </div>
 
-        <a href="arduino-portfolio.html" class="btn-volver">← Volver al Catálogo</a>
+        <a href="index.html" class="btn-volver">← Volver al Catálogo</a>
 
-        <!-- Sección de Cards con Información -->
-        <div class="content-wrapper">
-            <h2 class="section-title">
-                <span class="section-title-icon">💡</span>
-                Explicación
-            </h2>
+           <div class="content-wrapper">
+    <h2 class="section-title">
+        Explicación
+    </h2>
 
-            <div class="cards-grid">
-                <!-- Card 1: ¿Qué es Arduino? -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <div class="card-icon">🔧</div>
-                        <h3 class="card-title">Explicacion de la maqueta</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-image-container">
-                            <div class="card-image-placeholder">⚙️</div>
-                        </div>
-                        <p class="card-description">
-                            El circuito sirve principalmente con unos LDEs, cables*Jumpers*, Protoboard,
-                            Arduino y una fotorresistencia.
-                            El objetivo principal de este circuito es el hacer que unos seies LEDs prensan en el momento que se
-                            apaguen las luces y estos entren en osuridad, esto es logrado gracias a la fotrresistencia que esta 
-                            programada con Arduino IDE y asi poder detectar el momento donde se apague y prenda.
-                        </p>
-                        <ul class="card-features">
-                            <li><// C++ code
-                            //
-                             int rojo=13;
-                             int verde=12;
-                             int blanco=11;
-                             int amarillo=10;
-                             int azul=9;
-                             int naranja=8;
-                             int lecturasensor;
-                            void setup()
-                            {
-                              Serial.begin(9600);
-                              pinMode(rojo, OUTPUT);
-                              pinMode(verde, OUTPUT);
-                              pinMode(blanco, OUTPUT);
-                              pinMode(amarillo, OUTPUT);
-                              pinMode(azul, OUTPUT);
-                              pinMode(naranja, OUTPUT);
-                            }
+    <h3>Explicación del Circuito de la casa</h3>
 
-                            void loop()
-                            {
-                             lecturasensor=analogRead(A0);
-                             Serial.println(lecturasensor);
-                             
-                             if(lecturasensor>600)
-                             {
-                               digitalWrite(rojo,HIGH);
-                               digitalWrite(verde,HIGH);
-                               digitalWrite(blanco,HIGH);
-                               digitalWrite(amarillo,HIGH);
-                               digitalWrite(azul,HIGH);
-                               digitalWrite(naranja,HIGH);
-                             }
-                             else
-                             {
-                               digitalWrite(rojo,LOW);
-                               digitalWrite(verde,LOW);
-                               digitalWrite(blanco,LOW);
-                               digitalWrite(amarillo,LOW);
-                               digitalWrite(azul,LOW);
-                               digitalWrite(naranja,LOW);
-                             }
-                    }</li>
-                            
-                        </ul>
+    <p>
+        Esta casa deberia prender en el momento que se apaguen las luces, cada LED prendera simultaneamente, esto debido
+        al LDR*Fotorresistencia*que por ayuda del Arduino reconoce el nivel de luz de su entorno y este los prende o apaga.
+    </p>
 
+    <h3>Materiales empleados en el circuito</h3>
+    <ul>
+        <li>Arduino</li>
+        <li>Protoboard</li>
+        <li>Jumpers</li>
+        <li>LEDs blancos</li>
+        <li>Fotorresistencia*LDR*</li>
+    </ul>
+
+    <h3>Materiales empleados en la maqueta</h3>
+    <ul>
+        <li>Una caja de carton</li>
+        <p>La caja de carton se uso para poder hacer absolutamente todo la casa y decoraciones</p>
+        <li>Un cutter y cuchillo</li>
+        <p>Este se empleo para diseñar darle forma a todos los componentes de la maqueta como los balcones</p>
+        <li>Pedazos de plastico</li>
+        <p>Estos pequeños pedazos de plastico se usaron para simular ventanas y puertas</p>
+        <li>Pintura plateada</li>
+        <p>Este fue solamente para pintar la casa con un tono mas moderno</p>
+    </ul>
+
+    <h3>Diagrama en Tinkercad</h3>
+    <img src="maqueta.PNG" alt="Circuito en Tinkercad" width="300"></img>
+
+    <p>
+        Este es el circuito de Tinkercad para que veas como debe de quedar
+    </p>
+
+    <div class="card-image-container">
+        <div class="card-image-placeholder">🔩</div>
+    </div>
+
+</div>
                     </div>
                 </div>
-
-                <!-- Card 2: Componentes Básicos -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <div class="card-icon">🔌</div>
-                        <h3 class="card-title">Diagrama en Tinkercad</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-image-container">
-                            <div class="card-image-placeholder">🔩</div>
-                        </div>
-                        <p class="card-description">
-                            Grafica del diseño en Tinkercad.
-                        </p>
-                         <img src="Tinkercad.png" alt="Esta es la imagen de prueba de como deberia quedar el circuito en fisico."style="width: 100%; height: auto;">
-                        <ul class="card-features">
-                            <li>MATERIALES</li>
-                            <li>LEDs</li>
-                            <li>Cables*Jumpers*</li>
-                            <li>Protoboard</li>
-                            <li>Arduino</li>
-                            <li>Fotorresistencia</li>
-                        </ul>
-
-                    </div>
-                </div>
-
-                <!-- Card 3: Conceptos Eléctricos -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <div class="card-icon">⚡</div>
-                        <h3 class="card-title">Diseño de la maqueta</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-image-container">
-                            <div class="card-image-placeholder">💫</div>
-                        </div>
-                        <p class="card-description">
-                            La maqueta se empezo con una caja de un tamaño mediano*como de galleta pero un poco mucho mas grande*,
-                            se abrio por la parte de arriba con un cuchillo para darle una forma de una casa un toque minimalista
-                            se le pego un carton en la parte de abajo del resto de la caja para asi simular una especie de jardin
-                            o patio, kuego se hicieron averturas en la caja para simular unas puertas y ventanas. Luego se hizo un agujero
-                            en la parte de atras de la caja de un tamaño grande para poder meter la protoboard y el Arduino y empezar a
-                            pegar los LEDs y los Jumpers de manera escondida en varias partes de la casa, luego donde deberia ir las
-                            puertas y las ventanas se le pego un unos plasticos para simular cristal y se escondio la fotorresistencia
-                            en dentro con un orificio con unos cables para simular una especie de antena.
-                            Tambien se pinto de un color gris.
-                        </p>
                         
                     </div>
                 </div>
             </div>
-      </div>
-     <section class="catalog">
+        </div>
 
-    <h2>Lista de materiales</h2>
-
-         <ol>
-    <li>Arduino UNO</li>
-     <img src="Arduino_.jpg" alt=""style="width: 100%; height: auto;">        
-    <li>Protoboard</li>
-     <img src="Proto.webp" alt=""style="width: 100%; height: auto;">         
-    <li>Jumpers</li>
-    <img src="Jumpers.jpg" alt=""style="width: 100%; height: auto;"> 
-    <li>LEDs(un total de 6)</li>
-    <img src="LEDs.jfif" alt=""style="width: 100%; height: auto;"> 
-    <li>Resistencias de 220 Ohmos</li>
-    <img src="resistencias.jfif" alt=""style="width: 100%; height: auto;"> 
-    <li>Fotorresistencias</li>
-    <img src="LDR.jfif" alt=""style="width: 100%; height: auto;"> 
-</ol>
-
-
-<h2>Los materiales de la construccion de la maqueta</h2>
-<ol>
-    <li>Una caja de carton de tamaño pequeña.</li>
-    <h2>La caja fue absolutamente toda la base de la creacion de la maqueta, desde, unos pequeños balcones hasta la base
-    de la caja que simula un jardin</h2>
-    <li>Un Cuter</li>
-    <h2>Esta fue la herramienta que le dio toda la forma a la maqueta</h2>
-    <li>laminas de plastico</li>
-    <h2>Las laminas de plastico fue lo que se uso para simular ventanas y la puerta</h2>
-    <li>Cinta adesiva</li>
-    <h2>Esta fue la conexion de que unio todas las piezas y los cables</h2>
-    <li>cuchillo</li>
-    <h2>Fue otra mini herramienta para la creacion de la maqueta</h2>
-    
-</ol>
-    
-
-</section>
         
             </div>
         </div>       
